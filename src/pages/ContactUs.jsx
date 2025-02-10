@@ -2,8 +2,15 @@ import React from "react";
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
 import { Typography } from "@material-tailwind/react";
+import { useEffect } from "react";
+
 
 const ContactPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  
   return (
     <>
     <Header/>

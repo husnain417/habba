@@ -6,6 +6,10 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <div className="flex py-6 border-b border-gray-200">
       <img
@@ -71,6 +75,8 @@ export default function Cart() {
   const updateCart = (newCart) => {
     localStorage.setItem('cart', JSON.stringify(newCart));
     setCartItems(newCart);
+    localStorage.setItem('cartCount', newCart.length); // Update count in localStorage
+    window.dispatchEvent(new Event('storage')); // Notify other components
   };
 
   const handleUpdateQuantity = (itemId, newQuantity) => {
@@ -166,14 +172,15 @@ export default function Cart() {
 
                   <button
                     type="button"
-                    className="mt-8 w-full bg-emerald-600 py-3 px-4 rounded text-white font-medium hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                    className="mt-8 w-full bg-black py-3 px-4 rounded text-white font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                     onClick={() => navigate('/checkout')} // Navigate to checkout page
                   >
                     Proceed to Checkout
                   </button>
+
                   
                   <p className="mt-4 text-center text-sm text-gray-500">
-                    Taxes and shipping calculated at checkout
+                    Total includes shipping charges
                   </p>
                 </div>
               </div>

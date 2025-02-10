@@ -7,7 +7,14 @@ import BlogSection from "../components/blog"
 import ReviewsSection from "../components/review";
 import FAQSection from '../components/faqs';
 import AnimatedFooter from "../components/footer"
+import { useEffect } from "react";
+
 const Landing = () => {
+
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
+
   return (
     <div>
       <Header  currentPage={"home"} />

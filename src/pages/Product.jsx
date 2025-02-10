@@ -8,55 +8,66 @@ import { Filter, SlidersHorizontal, ChevronDown, Star, ShoppingCart } from 'luci
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Product Data
 const products = [
   {
     id: 1,
-    name: 'Growth Hair Oil',
+    name: 'Natural Hair Oil',
     imageSrc: '/assets/img4.jpg',
+    imageSrc2: '/assets/img1.png',
+    imageSrc3: '/assets/img5.jpg',
     imageAlt: "Hair growth oil with natural ingredients",
-    price: '1500.0',
+    price: '1950.0',
+    oldPrice: '2200.0', // Higher than current price
     category: 'Hair Oil',
     rating: 4.5,
     reviews: 128,
     inStock: true,
-    description: 'Promotes healthy hair growth with natural ingredients',
+    description: 'A premium blend of natural oils that nourish the scalp, strengthen hair roots, and promote thicker, healthier hair. Helps reduce dandruff, prevent hair fall, and improve overall hair texture. Suitable for all hair types and safe for daily use.',
     featured: true,
     tags: ['Organic', 'Growth', 'Natural'],
     variants: ['100ml', '200ml', '500ml']
   },
   {
     id: 2,
-    name: 'Anti-Dandruff Oil',
+    name: 'Natural Hair Oil (Bundle of 2)',
     imageSrc: '/assets/img4.jpg',
-    imageAlt: "Anti-dandruff hair oil",
-    price: '1500.0',
+    imageSrc2: '/assets/img1.png',
+    imageSrc3: '/assets/img5.jpg',
+    imageAlt: "Hair growth oil bundle of 2",
+    price: '3500.0',
+    oldPrice: '4000.0', // Higher than current price
     category: 'Hair Oil',
-    rating: 4.3,
-    reviews: 95,
+    rating: 4.5,
+    reviews: 128,
     inStock: true,
-    description: 'Effectively controls dandruff and soothes scalp',
-    featured: false,
-    tags: ['Anti-Dandruff', 'Soothing', 'Natural'],
-    variants: ['100ml', '200ml']
+    description: 'Double the nourishment! This bundle offers two bottles of our best-selling natural hair oil at a discounted price. Ideal for maintaining consistent hair care while saving money. Perfect for families or those looking for long-term use.',
+    featured: true,
+    tags: ['Organic', 'Growth', 'Natural'],
+    variants: ['2 x 100ml', '2 x 200ml']
   },
   {
     id: 3,
-    name: 'Argan Hair Oil',
+    name: 'Natural Hair Oil (Bundle of 3)',
     imageSrc: '/assets/img4.jpg',
-    imageAlt: "Pure argan hair oil",
-    price: '1500.0',
+    imageSrc2: '/assets/img1.png',
+    imageSrc3: '/assets/img5.jpg',
+    imageAlt: "Hair growth oil bundle of 3",
+    price: '5500.0',
+    oldPrice: '6000.0', // Higher than current price
     category: 'Hair Oil',
-    rating: 4.7,
-    reviews: 156,
+    rating: 4.5,
+    reviews: 128,
     inStock: true,
-    description: 'Pure Moroccan argan oil for silky smooth hair',
+    description: 'The ultimate hair care package! Our 3-bottle bundle provides the best value, ensuring your hair remains strong, shiny, and healthy for months. A perfect choice for those looking for maximum benefits at the lowest price per bottle.',
     featured: true,
-    tags: ['Argan', 'Moroccan', 'Premium'],
-    variants: ['50ml', '100ml']
+    tags: ['Organic', 'Growth', 'Natural'],
+    variants: ['3 x 100ml', '3 x 200ml']
   },
-  // ... other products from previous list
 ];
+
+
+
+
 
 // Helper Components
 const RatingStars = ({ rating }) => {
@@ -84,13 +95,20 @@ const ProductCard = ({ product }) => {
     <div
       className="group relative pb-10 cursor-pointer"
       onClick={() => navigate(`/product/${product.id}`, { state: { product } })}
-    >      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100">
+    >      
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-gray-100 group">
         <img
           src={product.imageSrc}
           alt={product.imageAlt}
-          className="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover object-center transition-all duration-300 group-hover:opacity-0"
+        />
+        <img
+          src={product.imageSrc2}
+          alt={product.imageAlt}
+          className="absolute inset-0 h-full w-full object-cover object-center transition-all duration-300 opacity-0 group-hover:opacity-100"
         />
       </div>
+
       <div className="mt-4 space-y-1">
         <div className="flex justify-between">
           <h3 className="text-sm font-medium text-gray-900">
@@ -99,13 +117,22 @@ const ProductCard = ({ product }) => {
               {product.name}
             </a>
           </h3>
-          <p className="text-sm font-medium text-gray-900">{"Rs."}{product.price}{"  PKR"}</p>
         </div>
+
+        <div>
+          <p className="text-sm font-medium text-gray-900" style={{ fontFamily: 'Assistant, sans-serif' }}>
+            <span className="line-through">Rs. {product.oldPrice} PKR</span>
+          </p>        
+          <p className="text-{1.2rem} font-bold  text-gray-900" style={{ fontFamily: 'Assistant, sans-serif' }}>
+            <span>Rs. {product.price} PKR</span>
+          </p>        
+        </div>
+
         <p className="text-sm text-gray-500">{product.category}</p>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <RatingStars rating={product.rating} />
           <span className="text-xs text-gray-500">({product.reviews})</span>
-        </div>
+        </div> */}
         <div className="flex flex-wrap gap-1">
           {product.tags.slice(0, 2).map((tag) => (
             <span
@@ -153,7 +180,10 @@ export default function ProductPage() {
     return () => ctx.revert();
   }, []);
 
-  
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -161,7 +191,7 @@ export default function ProductPage() {
 
       {/* Banner Image */}
       <div
-        className="w-full h-[500px] bg-cover bg-center bg-no-repeat relative"
+        className="w-full h-[90vh] bg-cover bg-center bg-no-repeat relative"
         style={{ 
           backgroundImage: `url('https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=2070&auto=format&fit=crop')` 
         }}

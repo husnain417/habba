@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 const AnimatedWave = ({ color = "#047857", height = "120", className = "" }) => {
   return (
     <div className={`w-full overflow-hidden ${className}`}>
-      <svg 
-        className="w-full h-auto" 
-        viewBox="0 0 1440 120" 
-        preserveAspectRatio="none"
-      >
+      <svg className="w-full h-auto" viewBox="0 0 1440 120" preserveAspectRatio="none">
         <defs>
           <path
             id="gentle-wave"
@@ -33,36 +30,18 @@ const AnimatedWave = ({ color = "#047857", height = "120", className = "" }) => 
           </path>
         </defs>
         <use href="#gentle-wave" fill={color} />
-        <use 
-          href="#gentle-wave" 
-          fill={color} 
-          opacity="0.5"
-          transform="translate(-50 3)"
-        >
+        <use href="#gentle-wave" fill={color} opacity="0.5" transform="translate(-50 3)">
           <animate
             attributeName="transform"
-            values="
-              translate(-50 3);
-              translate(-25 5);
-              translate(-40 2);
-              translate(-50 3)"
+            values="translate(-50 3); translate(-25 5); translate(-40 2); translate(-50 3)"
             dur="3s"
             repeatCount="indefinite"
           />
         </use>
-        <use 
-          href="#gentle-wave" 
-          fill={color} 
-          opacity="0.3"
-          transform="translate(50 2)"
-        >
+        <use href="#gentle-wave" fill={color} opacity="0.3" transform="translate(50 2)">
           <animate
             attributeName="transform"
-            values="
-              translate(50 2);
-              translate(25 4);
-              translate(35 1);
-              translate(50 2)"
+            values="translate(50 2); translate(25 4); translate(35 1); translate(50 2)"
             dur="2s"
             repeatCount="indefinite"
           />
@@ -73,18 +52,38 @@ const AnimatedWave = ({ color = "#047857", height = "120", className = "" }) => 
 };
 
 const WaveSection = () => {
-    const imagePaths = [
-        '/assets/img1.png',
-        '/assets/img2.jpeg',
-        '/assets/img3.jpeg',
-        '/assets/img4.jpg',
-        '/assets/img3.jpeg',
-        '/assets/img4.jpg',
-        '/assets/img2.jpeg',
-    ];
+  const sectionRef = useRef(null);
 
-    return (
-        <div className="relative w-full pt-6 mt-20">
+  useEffect(() => {
+    gsap.fromTo(
+      sectionRef.current,
+      { opacity: 0, y: 100 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%", 
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  }, []);
+
+  const imagePaths = [
+    "/assets/img1.png",
+    "/assets/img2.jpeg",
+    "/assets/img3.jpeg",
+    "/assets/img4.jpg",
+    "/assets/img3.jpeg",
+    "/assets/img4.jpg",
+    "/assets/img2.jpeg",
+  ];
+
+  return (
+    <div ref={sectionRef} className="relative w-full pt-6 mt-20 opacity-0">
             {/* Top wave */}
             <AnimatedWave className="transform rotate-180" />
             
@@ -92,38 +91,38 @@ const WaveSection = () => {
             <div className="bg-white py-4 px-4">
                 {/* Text Content */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-bold text-black mb-4">Loved by 1 Lakh Pakistani's</h2>
-                    <p className="text-2xl text-black">Over 5000+ Positive Reviews</p>
+                    <h2 className="text-4xl font-bold text-black mb-4">Loved by Hundred of Pakistani's</h2>
+                    <p className="text-2xl text-black">Over 100+ Positive Reviews</p>
                 </div>
 
-                {/* Image Grid - Responsive */}
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {/* First image - Full height on larger screens */}
-                        <div className="lg:row-span-2 h-64 lg:h-full lg">
-                            <div className="h-full rounded-2xl overflow-hidden">
-                                <img 
-                                    src={imagePaths[0]}
-                                    alt="Review 1"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {/* First image - Full height on larger screens */}
+    <div className="lg:row-span-2 h-64 lg:h-full">
+      <div className="h-full rounded-2xl overflow-hidden">
+        <img 
+          src={imagePaths[0]}
+          alt="Review 1"
+          className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+        />
+      </div>
+    </div>
 
-                        {/* Remaining images */}
-                        {imagePaths.slice(1).map((path, index) => (
-                            <div key={index} className="h-64">
-                                <div className="h-full rounded-2xl overflow-hidden">
-                                    <img 
-                                        src={path}
-                                        alt={`Review ${index + 2}`}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+    {/* Remaining images */}
+    {imagePaths.slice(1).map((path, index) => (
+      <div key={index} className="h-64">
+        <div className="h-full rounded-2xl overflow-hidden">
+          <img 
+            src={path}
+            alt={`Review ${index + 2}`}
+            className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
             </div>
             
             {/* Bottom wave */}

@@ -19,7 +19,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden flex flex-col items-center">
+    <div className="relative w-full h-[90vh] overflow-hidden flex flex-col items-center">
       {/* Heading */}
       <h2 className="absolute top-4 text-2xl font-semibold text-gray-800 z-10 w-full text-white p-20 text-[40px]">
         {slides[current].text}

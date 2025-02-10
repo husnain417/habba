@@ -4,8 +4,9 @@ import { ThemeProvider } from "@material-tailwind/react";
 import Product from "./pages/Product";
 import ContactPage from "./pages/ContactUs";
 import Cart from "./pages/Cart";
-import Checkoutpage from "./pages/Checkoutpage";
 import ProductDetails from "./pages/ProductDetails";
+import Checkout from "./pages/Checkout";
+import About from "./pages/About";
 
 const App = () => {
   return (
@@ -14,9 +15,10 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/products" element={<Product />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="/checkout" element={<Checkoutpage />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

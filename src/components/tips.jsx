@@ -1,25 +1,49 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import { PlayCircle, PauseCircle, Volume2, VolumeX } from "lucide-react";
-
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 
+
 const videos = [
-  "/assets/vid1.mp4",
-  "/assets/vid2.mp4",
-  "/assets/vid1.mp4",
-  "/assets/vid2.mp4",
-  "/assets/vid1.mp4"
+  "/assets/review.mp4",
+  "/assets/review.mp4",
+  "/assets/review.mp4",
+  "/assets/review.mp4",
+  "/assets/review.mp4",
 ];
 
 function VideoSwiper() {
   const swiperRef = useRef(null);
+  const containerRef = useRef(null); // Ref for animation
+
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [activeVideoIndex, setActiveVideoIndex] = useState(1);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 100 }, // Start position (hidden and lower)
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%", // Start animation when 80% of element is in view
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  }, []);
 
   const playActiveVideo = async () => {
     const videos = document.querySelectorAll('video');
@@ -48,7 +72,7 @@ function VideoSwiper() {
   const togglePlayPause = () => {
     const videos = document.querySelectorAll('video');
     const activeVideo = videos[activeVideoIndex];
-    
+
     if (activeVideo) {
       if (isPlaying) {
         activeVideo.pause();
@@ -62,7 +86,7 @@ function VideoSwiper() {
   const toggleMute = () => {
     const videos = document.querySelectorAll('video');
     const activeVideo = videos[activeVideoIndex];
-    
+
     if (activeVideo) {
       activeVideo.muted = !isMuted;
       setIsMuted(!isMuted);
@@ -70,7 +94,7 @@ function VideoSwiper() {
   };
 
   return (
-    <div className="wrapper">
+    <div ref={containerRef} className="wrapper">
       <div className="outer-container">
         <div className="inner-container">
           <div className="swiper-section">

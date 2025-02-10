@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
+import Instructions from "../components/instructions";
 
 // Toast Notification Component
 const Toast = ({ show, message, onClose }) => {
@@ -24,10 +25,15 @@ const Toast = ({ show, message, onClose }) => {
 };
 
 export default function ProductDetails() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const location = useLocation();
   const product = location.state?.product;
   const [quantity, setQuantity] = useState(1);
   const [showToast, setShowToast] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(product.imageSrc);
 
   if (!product) {
     return <div className="text-center text-xl mt-10">Product not found</div>;
@@ -71,22 +77,38 @@ export default function ProductDetails() {
       <main className="flex-grow bg-gray-50 py-10 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Image Gallery */}
-            <div className="space-y-4">
-              <div className="bg-white p-4 rounded-lg">
-                <img 
-                  src={product.imageSrc} 
-                  alt={product.imageAlt} 
-                  className="w-full h-[500px] object-cover rounded-lg"
-                />
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-                <img src={product.imageSrc} alt="thumbnail" className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" />
-                <img src={product.imageSrc} alt="thumbnail" className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" />
-                <img src={product.imageSrc} alt="thumbnail" className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" />
-                <img src={product.imageSrc} alt="thumbnail" className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" />
-              </div>
+          <div className="space-y-4">
+            {/* Main Image */}
+            <div className="bg-white p-4 rounded-lg">
+              <img 
+                src={selectedImage} 
+                alt={product.imageAlt} 
+                className="w-full h-[500px] object-cover rounded-lg"
+              />
             </div>
+
+            {/* Thumbnails */}
+            <div className="grid grid-cols-4 gap-2">
+              <img 
+                src={product.imageSrc} 
+                alt="thumbnail" 
+                className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
+                onClick={() => setSelectedImage(product.imageSrc)}
+              />
+              <img 
+                src={product.imageSrc2} 
+                alt="thumbnail" 
+                className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
+                onClick={() => setSelectedImage(product.imageSrc2)}
+              />
+              <img 
+                src={product.imageSrc3} 
+                alt="thumbnail" 
+                className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
+                onClick={() => setSelectedImage(product.imageSrc3)}
+              />
+            </div>
+          </div>
 
             {/* Product Info */}
             <div className="bg-white p-8 rounded-lg">
@@ -97,7 +119,7 @@ export default function ProductDetails() {
               
               <div className="mb-6">
                 <p className="text-2xl font-semibold">Rs. {product.price} PKR</p>
-                <p className="text-sm text-gray-500 mt-1">Shipping calculated at checkout</p>
+                <p className="text-sm font-bold text-gray-500 mt-1">Shipping charges are included</p>
               </div>
 
               <div className="space-y-6">
@@ -147,6 +169,7 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
+        <Instructions/>
       </main>
       <AnimatedFooter />
     </div>
