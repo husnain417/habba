@@ -29,11 +29,17 @@ export default function ProductDetails() {
     window.scrollTo(0, 0);
   }, []);
 
+  
+  const getImageUrl = (path) => {
+    return `http://localhost:5000/${path.replace(/\\/g, '/')}`;
+  };
+
+
   const location = useLocation();
   const product = location.state?.product;
   const [quantity, setQuantity] = useState(1);
   const [showToast, setShowToast] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(product.imageSrc);
+  const [selectedImage, setSelectedImage] = useState(getImageUrl(product.images[0]));
 
   if (!product) {
     return <div className="text-center text-xl mt-10">Product not found</div>;
@@ -46,20 +52,31 @@ export default function ProductDetails() {
 
   const addToCart = () => {
     const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItemIndex = existingCart.findIndex(item => item.id === product.id);
-
+    
+    // Log the product to see if it has an ID
+    console.log('Product being added:', product);
+    
+    // Make sure product.id exists
+    if (!product._id && !product.id) {
+      console.error('Product ID is missing!');
+      return;
+    }
+  
+    const productId = product._id || product.id; // Handle both MongoDB _id and regular id
+    const existingItemIndex = existingCart.findIndex(item => item.id === productId);
+  
     if (existingItemIndex !== -1) {
       existingCart[existingItemIndex].quantity += quantity;
     } else {
       existingCart.push({
-        id: product.id,
+        id: productId,
         name: product.name,
         price: product.price,
-        image: product.imageSrc,
+        image: getImageUrl(product.images[0]),
         quantity: quantity
       });
     }
-
+  
     localStorage.setItem('cart', JSON.stringify(existingCart));
     setShowToast(true);
   };
@@ -87,27 +104,18 @@ export default function ProductDetails() {
               />
             </div>
 
-            {/* Thumbnails */}
-            <div className="grid grid-cols-4 gap-2">
+          {/* Thumbnails */}
+          <div className="grid grid-cols-4 gap-2">
+            {product.images.map((image, index) => (
               <img 
-                src={product.imageSrc} 
-                alt="thumbnail" 
+                key={index}
+                src={image ? getImageUrl(image) : '/assets/placeholder.jpg'}
+                alt={`Product thumbnail ${index + 1}`}
                 className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
-                onClick={() => setSelectedImage(product.imageSrc)}
+                onClick={() => setSelectedImage(getImageUrl(image))}
               />
-              <img 
-                src={product.imageSrc2} 
-                alt="thumbnail" 
-                className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
-                onClick={() => setSelectedImage(product.imageSrc2)}
-              />
-              <img 
-                src={product.imageSrc3} 
-                alt="thumbnail" 
-                className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-75" 
-                onClick={() => setSelectedImage(product.imageSrc3)}
-              />
-            </div>
+            ))}
+          </div>
           </div>
 
             {/* Product Info */}
@@ -124,7 +132,7 @@ export default function ProductDetails() {
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <p className="text-gray-700">{product.description}</p>
+                <p className="text-gray-700 max-w-lg break-words">{product.description}</p>
                   <ul className="list-disc list-inside text-gray-700 space-y-1">
                     {product.features?.map((feature, index) => (
                       <li key={index}>{feature}</li>

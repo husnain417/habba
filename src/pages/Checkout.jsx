@@ -1,14 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
+import { Loader2 } from "lucide-react";
+
+const Toast = ({ show, message, onClose }) => {
+  useEffect(() => {
+    if (show) {
+      const timer = setTimeout(onClose, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [show, onClose]);
+
+  if (!show) return null;
+
+  return (
+    <div className="fixed top-4 right-4 z-50">
+      <div className="bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg">
+        <p>{message}</p>
+      </div>
+    </div>
+  );
+};
 
 const countries = ["Pakistan", "United States", "Canada", "United Kingdom", "Australia", "India", "Germany", "France", "China", "Japan"];
 
 const Checkout = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+  const [isLoading, setIsLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState('cash');
   const [errors, setErrors] = useState({});
+  const [showToast, setShowToast] = useState(false);
   const [formData, setFormData] = useState({
+    
     email: '',
     firstName: '',
     lastName: '',
@@ -32,7 +59,7 @@ const Checkout = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    setErrors(prev => ({ ...prev, [name]: '' })); // Clear error when user types
+    setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validateForm = () => {
@@ -47,19 +74,79 @@ const Checkout = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    console.log('Order submitted', { formData, selectedPayment });
+
+    setIsLoading(true);
+  
+    try {
+      const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  
+      const orderData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        address: formData.address,
+        apartment: formData.apartment,
+        city: formData.city,
+        postalCode: formData.postalCode,
+        country: formData.country,
+        phone: formData.phone,
+        items: cartItems.map(item => ({
+          productId: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        totalAmount: totalAmount,
+        paymentMethod: selectedPayment
+      };
+  
+      const response = await fetch('http://localhost:5000/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData)
+      });
+  
+      const data = await response.json();
+  
+      if (data.success) {
+        localStorage.removeItem('cart');
+        setCartItems([]);
+        setShowToast(true);
+        // Use window.location for navigation
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);      } else {
+        throw new Error(data.message || 'Failed to place order');
+      }
+  
+    } catch (error) {
+      console.error('Order submission error:', error);
+      alert('Failed to place order. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   return (
     <>
       <Header />
+
+      <Toast 
+        show={showToast}
+        message={`Order Placed Successfully!`}
+        onClose={() => setShowToast(false)}
+      />
+      
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
@@ -71,7 +158,7 @@ const Checkout = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="Email or mobile phone number"
+                  placeholder="Enter your email"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
@@ -165,9 +252,10 @@ const Checkout = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="Phone"
+                    placeholder="Phone Number"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
+                   <small>We recommend providing your WhatsApp number for quicker responses.</small>
                   {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
               </div>
@@ -220,9 +308,17 @@ const Checkout = () => {
 
               <button
                 type="submit"
-                className="w-full mt-6 bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors"
+                disabled={isLoading}
+                className="w-full mt-6 bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                Complete Order
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Complete Order'
+                )}
               </button>
             </form>
           </div>

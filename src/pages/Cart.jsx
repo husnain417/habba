@@ -6,6 +6,7 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
+  console.log(item);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -64,6 +65,10 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 };
 
 export default function Cart() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate(); // Initialize navigate
   
