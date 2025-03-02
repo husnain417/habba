@@ -10,13 +10,28 @@ const slides = [
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
+  // Preload images
+  useEffect(() => {
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.image;
+    });
+  }, []);
+
+  // Auto-slide effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 3000);
+      setLoaded(false); // Start fade transition
+      setTimeout(() => {
+        setCurrent((prev) => (prev + 1) % slides.length);
+        setLoaded(true); // End fade transition
+      }, 500); // Delay before switching image
+    }, 3000); // Slide change every 3 seconds
+
     return () => clearInterval(interval);
-  }, []);
+  }, [current]);
 
   return (
     <div className="relative w-full h-[90vh] overflow-hidden flex flex-col items-center">
@@ -25,14 +40,18 @@ const Hero = () => {
         {slides[current].text}
       </h2>
 
-      {/* Image Background */}
-      <div
-        className="w-full h-full bg-cover bg-center transition-opacity duration-1000"
-        style={{
-          backgroundImage: `url(${slides[current].image})`,
-        }}
-      >
-        
+      {/* Image Background with Smooth Transition */}
+      <div className="w-full h-full bg-cover bg-center relative">
+        {slides.map((slide, index) => (
+          <motion.div
+            key={index}
+            className="absolute w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${slide.image})` }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: index === current && loaded ? 1 : 0 }}
+            transition={{ duration: 1 }}
+          ></motion.div>
+        ))}
       </div>
 
       {/* Navigation Controls */}
