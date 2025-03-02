@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
+const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 import Instructions from "../components/instructions";
 
 // Toast Notification Component
@@ -31,7 +32,7 @@ export default function ProductDetails() {
 
   
   const getImageUrl = (path) => {
-    return `http://localhost:5000/${path.replace(/\\/g, '/')}`;
+    return `${REACT_APP_API_URL}/${path.replace(/\\/g, '/')}`;
   };
 
 

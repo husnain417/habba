@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
 import { Loader2 } from "lucide-react";
+const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 
 const Toast = ({ show, message, onClose }) => {
   useEffect(() => {
@@ -107,7 +108,7 @@ const Checkout = () => {
         paymentMethod: selectedPayment
       };
   
-      const response = await fetch('http://localhost:5000/orders', {
+      const response = await fetch(`${REACT_APP_API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

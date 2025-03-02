@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { User, Package, RefreshCw, Trash2, Settings } from 'lucide-react';
+const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 
 // Main AdminPanel component
 const AdminPanel = () => {
@@ -217,7 +218,7 @@ const AddProductForm = () => {
       });
 
       // Make API call
-      const response = await axios.post('http://localhost:5000/products', formDataToSend, {
+      const response = await axios.post(`${REACT_APP_API_URL}/products`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
@@ -438,7 +439,7 @@ const UpdateProductForm = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/products');
+      const response = await axios.get(`${REACT_APP_API_URL}/products`);
       if (response.data.success) {
         setProducts(response.data.data);
       }
@@ -505,7 +506,7 @@ const UpdateProductForm = () => {
       }
 
       const response = await axios.patch(
-        `http://localhost:5000/update/${selectedProduct._id}`,
+        `${REACT_APP_API_URL}/update/${selectedProduct._id}`,
         changedFields
       );
 
@@ -620,7 +621,7 @@ const RemoveProductForm = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/products'); // Update API URL
+      const response = await fetch(`${REACT_APP_API_URL}/products`); // Update API URL
       const data = await response.json();
       if (data.success) {
         setProducts(data.data);
@@ -641,7 +642,7 @@ const RemoveProductForm = () => {
       setError('');
       setSuccessMessage('');
   
-      const response = await fetch(`http://localhost:5000/remove/${selectedProduct}`, { 
+      const response = await fetch(`${REACT_APP_API_URL}/remove/${selectedProduct}`, { 
         method: 'DELETE',
       });
   

@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { useNavigate } from "react-router-dom";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Filter, SlidersHorizontal, ChevronDown, Star, ShoppingCart } from 'lucide-react';
+const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,7 +33,7 @@ const ProductCard = ({ product }) => {
   
   // Convert file path to full URL
   const getImageUrl = (path) => {
-    return `http://localhost:5000/${path.replace(/\\/g, '/')}`;
+    return `${REACT_APP_API_URL}/${path.replace(/\\/g, '/')}`;
   };
 
   return (
@@ -104,7 +105,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/products');
+        const response = await fetch(`${REACT_APP_API_URL}/products`);
         const result = await response.json();
         
         if (result.success) {
