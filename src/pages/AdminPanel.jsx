@@ -48,12 +48,6 @@ const AdminPanel = () => {
                 active={activeSection === 'remove'}
                 onClick={() => setActiveSection('remove')}
               />
-              <SidebarItem
-                icon={<Settings />}
-                text="Profile Settings"
-                active={activeSection === 'settings'}
-                onClick={() => setActiveSection('settings')}
-              />
             </nav>
           </div>
         </div>
@@ -64,7 +58,6 @@ const AdminPanel = () => {
             {activeSection === 'add' && <AddProductForm />}
             {activeSection === 'update' && <UpdateProductForm />}
             {activeSection === 'remove' && <RemoveProductForm />}
-            {activeSection === 'settings' && <ProfileSettings />}
           </div>
         </div>
       </div>
@@ -729,39 +722,39 @@ const RemoveProductForm = () => {
   )
 }
 
-const ProfileSettings = () => (
-  <div className="max-w-2xl">
-    <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
-    <form className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">Name</label>
-        <input type="text" className="w-full p-2 border rounded" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Email</label>
-        <input type="email" className="w-full p-2 border rounded" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Profile Picture</label>
-        <input type="file" className="w-full p-2 border rounded" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Current Password</label>
-        <input type="password" className="w-full p-2 border rounded" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">New Password</label>
-        <input type="password" className="w-full p-2 border rounded" />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Confirm New Password</label>
-        <input type="password" className="w-full p-2 border rounded" />
-      </div>
-      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        Save Changes
-      </button>
-    </form>
-  </div>
-);
+// const ProfileSettings = () => (
+//   <div className="max-w-2xl">
+//     <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
+//     <form className="space-y-4">
+//       <div>
+//         <label className="block text-sm font-medium mb-1">Name</label>
+//         <input type="text" className="w-full p-2 border rounded" />
+//       </div>
+//       <div>
+//         <label className="block text-sm font-medium mb-1">Email</label>
+//         <input type="email" className="w-full p-2 border rounded" />
+//       </div>
+//       <div>
+//         <label className="block text-sm font-medium mb-1">Profile Picture</label>
+//         <input type="file" className="w-full p-2 border rounded" />
+//       </div>
+//       <div>
+//         <label className="block text-sm font-medium mb-1">Current Password</label>
+//         <input type="password" className="w-full p-2 border rounded" />
+//       </div>
+//       <div>
+//         <label className="block text-sm font-medium mb-1">New Password</label>
+//         <input type="password" className="w-full p-2 border rounded" />
+//       </div>
+//       <div>
+//         <label className="block text-sm font-medium mb-1">Confirm New Password</label>
+//         <input type="password" className="w-full p-2 border rounded" />
+//       </div>
+//       <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+//         Save Changes
+//       </button>
+//     </form>
+//   </div>
+// );
 
 export default AdminPanel;

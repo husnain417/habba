@@ -28,6 +28,7 @@ const Header = () => {
     { name: "Products", path: "/products" },
     { name: "Contact Us", path: "/contact" },
     { name: "About Us", path: "/about" },
+    { name: "Shipping & Return", path: "/policy" },
   ];
 
   const isActive = (path) => {

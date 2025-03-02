@@ -104,6 +104,7 @@ const ContactPage = () => {
           </button>
         </form>
       </div>
+      <AnimatedFooter/>
     </>
   );
 };

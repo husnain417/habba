@@ -3,9 +3,9 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 const slides = [
-  { text: "Get to Know Us", image: "/assets/img1.png" },
-  { text: "Discover Our Products", image: "/assets/img2.jpeg" },
-  { text: "Your Hair, Our Priority", image: "/assets/img3.jpeg" },
+  { text: "Get to Know Us", image: "/assets/oil2.jpg" },
+  { text: "Discover Our Products", image: "/assets/main2.jpeg" },
+  { text: "Your Hair, Our Priority", image: "/assets/drop.jpeg" },
 ];
 
 const Hero = () => {

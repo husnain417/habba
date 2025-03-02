@@ -148,7 +148,7 @@ const Checkout = () => {
       />
       
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8">
           <div>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="bg-white p-4 rounded-md shadow-md">
@@ -289,19 +289,20 @@ const Checkout = () => {
                       className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300"
                     />
                     <label htmlFor="bank" className="ml-3 block text-sm text-gray-700">
-                      Bank Transfer
+                      Online Transfer
                     </label>
                   </div>
                 </div>
 
                 {selectedPayment === 'bank' && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-md">
-                    <h4 className="font-medium mb-2 text-gray-700">Bank Transfer Details</h4>
+                    <h4 className="font-medium mb-2 text-gray-700">Online Transfer Details</h4>
                     <p className="text-sm text-gray-600">
-                      Bank: Example Bank<br />
-                      Account: XXXX-XXXX-XXXX<br />
-                      IBAN: PK00ABCD0000000000000000
+                      Bank: Easypaisa<br />
+                      Number: 03421607309<br />
+                      Name: Abdullah Ashar
                     </p>
+                    <small>After making the payment, please send the receipt to this number: <strong>03421607309</strong> and complete the order</small>
                   </div>
                 )}
               </div>

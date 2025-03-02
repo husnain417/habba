@@ -174,10 +174,9 @@ const Footer = () => {
             <div ref={quickLinksRef}>
               <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:opacity-80 transition-opacity">About Us</a></li>
-                <li><a href="#" className="hover:opacity-80 transition-opacity">Products</a></li>
-                <li><a href="#" className="hover:opacity-80 transition-opacity">Blog</a></li>
-                <li><a href="#" className="hover:opacity-80 transition-opacity">Contact</a></li>
+                <li><a href="/about" className="hover:opacity-80 transition-opacity">About Us</a></li>
+                <li><a href="/products" className="hover:opacity-80 transition-opacity">Products</a></li>
+                <li><a href="/contact" className="hover:opacity-80 transition-opacity">Contact</a></li>
               </ul>
             </div>
 
@@ -187,15 +186,15 @@ const Footer = () => {
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <Phone size={18} />
-                  <span>+1 234 567 890</span>
+                  <span>0342 1607309</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail size={18} />
-                  <span>info@hairoil.com</span>
+                  <span>sultanshah101004@gmail.com</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin size={18} />
-                  <span>123 Beauty Street, NY</span>
+                  <span>Islamabad, Pakistan</span>
                 </li>
               </ul>
             </div>
