@@ -2,8 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/header";
 import AnimatedFooter from "../components/footer";
-const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 import Instructions from "../components/instructions";
+const REACT_APP_API_URL = "https://habba-backend-zvtd.onrender.com";
 
 // Toast Notification Component
 const Toast = ({ show, message, onClose }) => {
